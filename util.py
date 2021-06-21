@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-def get_suburb_data(Suburb):
+def get_suburb_data(search_term,search_status):
 
     search_term_data = pd.DataFrame(columns = ['PRICE','ADDRESS','BEDS','BATHS','CARS','SIZE','TYPE','SALE_DATE'])
     DRIVER_PATH = 'chromedriver.exe'
@@ -18,7 +18,13 @@ def get_suburb_data(Suburb):
     driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
     #driver.implicitly_wait(10)
     driver.maximize_window()
-    driver.get('https://www.realestate.com.au/sold')
+
+    if search_status == 'Sold':
+        driver.get('https://www.realestate.com.au/sold')
+    elif search_status == 'For Sale':
+        driver.get('https://www.realestate.com.au/buy')
+    elif search_status == 'For Rent':
+        driver.get('https://www.realestate.com.au/rent')
 
     try:
         el = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, "rui-search-button")))
@@ -27,7 +33,7 @@ def get_suburb_data(Suburb):
     except TimeoutException:
         print("Loading search page took too much time!")
 
-    search = driver.find_element_by_xpath("//input").send_keys(Suburb)
+    search = driver.find_element_by_xpath("//input").send_keys(search_term)
     surrounding = driver.find_element_by_class_name("formSuburbSurroundings").click()
     submit = driver.find_element_by_class_name("rui-search-button").click()
 

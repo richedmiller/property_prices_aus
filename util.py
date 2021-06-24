@@ -7,17 +7,26 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import os
 
 def get_suburb_data(search_term,search_status):
 
-    search_term_data = pd.DataFrame(columns = ['PRICE','ADDRESS','BEDS','BATHS','CARS','SIZE','TYPE','SALE_DATE'])
-    DRIVER_PATH = 'chromedriver.exe'
-    options = Options()
-    options.headless = False
-    options.add_argument('--disable-blink-features=AutomationControlled')
-    driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
+    #options = Options()
+    #options.headless = False
+    #options.add_argument('--disable-blink-features=AutomationControlled')
+    #driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
     #driver.implicitly_wait(10)
-    driver.maximize_window()
+    #driver.maximize_window()
+
+    search_term_data = pd.DataFrame(columns = ['PRICE','ADDRESS','BEDS','BATHS','CARS','SIZE','TYPE','SALE_DATE'])
 
     if search_status == 'Sold':
         driver.get('https://www.realestate.com.au/sold')

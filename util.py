@@ -12,13 +12,13 @@ import os
 def get_suburb_data(search_term,search_status):
 
     options = Options()
-    options.binary_location = os.environ.get('GOOGLE_CHROME_BIN')
+    options.binary_location = os.environ.get('/app/.apt/usr/bin/google-chrome')
     options.add_argument('--headless')
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--remote-debugging-port=9222')
 
-    driver = webdriver.Chrome(executable_path=str(os.environ.get('CHROMEDRIVER_PATH')), chrome_options=options)
+    driver = webdriver.Chrome(executable_path='/app/.chromedriver/bin/chromedriver', chrome_options=options)
 
     #options = Options()
     #options.headless = False

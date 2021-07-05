@@ -8,17 +8,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import os
+from os import path
 
 def get_suburb_data(search_term,search_status):
 
-    options = Options()
-    options.binary_location = os.environ.get('/app/.apt/usr/bin/google-chrome')
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--remote-debugging-port=9222')
 
-    driver = webdriver.Chrome(executable_path='/app/.chromedriver/bin/chromedriver', chrome_options=options)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver=webdriver.Chrome(executable_path = os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
     #options = Options()
     #options.headless = False
